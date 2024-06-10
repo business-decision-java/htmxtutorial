@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+
+        <h1>Teil 2 - Thymeleaf pur</h1>
+
+        <p><a href="/">Home Teil 2</a></p>
+
+
+        <h2>Aufgabe 3: Dynamisches Formular zum Speichern</h2>
+        <div class="bg-warning">
+            <ol>
+                <li>Verfollständige das Form, so dass neue Städte-Temperaturen Einträge hinzugefügt werden können.</li>
+                <li>Füge ein paar Städte mit ihren Temperaturen hinzu.</li>
+                <li>Prüfe auf der <a href="/temperatures">Seite mit den Temperaturen, ob Deine neuen Werte dort erscheinen.</a></li>
+            </ol>
+        </div>
+
+        <form action="#" th:action="@{/temperatures/saveTemperature}" th:object="${cityTemperature}" method="post">
+            <table class="table">
+                <tr>
+                    <td><label>City</label></td>
+                    <td><input type="text" /></td>
+                </tr>
+                <tr>
+                    <td><label>Temperatur</label></td>
+                    <td><input type="number"  /></td>
+                </tr>
+                <tr>
+                    <td><input type="submit" value="Save" /></td>
+                </tr>
+            </table>
+        </form>
+
+    </div>
+</body>
+</html>
