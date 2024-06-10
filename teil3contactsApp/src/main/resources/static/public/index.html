@@ -41,6 +41,7 @@
                          alt="Searching..."/>
                     <input type="submit" class="btn btn-primary" value="Search"/>
                 </form>
+
             </div>
             <form>
                 <div class="d-flex justify-content-between align-items-center">
@@ -59,35 +60,19 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="contact : ${contacts}">
-                        <td th:text="${contact.name}"></td>
-                        <td th:text="${contact.phone}"></td>
-                        <td th:text="${contact.email}"></td>
-                        <td>
-                            <a th:href="@{/contacts/{id}(id=${contact.id})}" class="btn btn-secondary btn-sm">View</a>
-                            <a th:href="@{/contacts/{id}/edit(id=${contact.id})}"
-                               class="btn btn-primary btn-sm">Edit</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="5" style="text-align: center">
-                            <button hx-target="closest tr"
-                                    hx-swap="outerHTML"
-                                    hx-select="tbody > tr"
-                                    th:hx-get="@{/contacts(page=${ page + 1 }, query=${query}, size=${size}, sort=${sort})}">
-                                Load More
-                            </button>
-                        </td>
-                    </tr>
+
+                    <div id="contact_rows_slot" th:replace="~{fragments/rows :: contact_rows}"/>
+
+                    <div id="more_rows_slot" th:replace="~{fragments/rows :: contacts_more}"/>
+
                     </tbody>
                 </table>
                 <div>
                 <span style="float: right">
-
-                      <a th:if="${contacts.number &gt;= 1}" th:href="@{/contacts(page=${contacts.number - 1}, query=${query}, size=${size}, sort=${sort})}">Previous</a>
-
-                      <a  th:if="${contacts.numberOfElements  &gt;= size}"th:href="@{/contacts(page=${contacts.number + 1}, query=${query}, size=${size}, sort=${sort})}">Next</a>
-
+                      <a th:if="${contacts.number &gt;= 1}"
+                         th:href="@{/contacts(page=${contacts.number - 1}, query=${query}, size=${size}, sort=${sort})}">Previous</a>
+                      <a th:if="${contacts.numberOfElements  &gt;= size}"
+                         th:href="@{/contacts(page=${contacts.number + 1}, query=${query}, size=${size}, sort=${sort})}">Next</a>
                 </span>
                 </div>
             </form>

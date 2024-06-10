@@ -5,13 +5,13 @@ import ch.obds.tutorial.contacts.repo.ContactRepository;
 import ch.obds.tutorial.contacts.web.form.ContactForm;
 import ch.obds.tutorial.contacts.web.form.EditContactForm;
 import ch.obds.tutorial.contacts.web.form.NewContactForm;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BeanPropertyBindingResult;
@@ -133,10 +133,32 @@ public class ContactsController {
     }
 
     @DeleteMapping({"/{id}"})
-    public ModelAndView handleDelete(@PathVariable String id, ModelMap model, RedirectAttributes redirectAttributes) {
+    public void handleDelete(
+            @PathVariable String id,
+            @RequestHeader(value = "HX-Trigger", required = false) String hxTrigger,
+            ModelMap model, RedirectAttributes redirectAttributes,
+            HttpServletResponse response) {
         this.contactRepository.deleteById(Long.parseLong(id));
+
         redirectAttributes.addFlashAttribute("message", "Contact deleted");
+
+        // Aufgabe 9: Inline Delete
+        if ("inline-delete-btn".equals(hxTrigger)) {
+
+            response.setHeader("HX-Trigger", "contact_deleted");
+            response.setStatus(HttpServletResponse.SC_OK);
+            return;
+
+        }
+
+        // mögliche simplere Variante für Aufgabe 4:
+        /*
         return new ModelAndView("redirect:/contacts", HttpStatus.SEE_OTHER);
+         */
+
+        // spezielles redirect (füllt HttpServletResponse), benötigt für Aufgabe 9.
+        response.setStatus(HttpServletResponse.SC_SEE_OTHER);
+        response.setHeader("Location", "/contacts");
     }
 
     @Constraint(validatedBy = UniqueEmailValidator.class)
