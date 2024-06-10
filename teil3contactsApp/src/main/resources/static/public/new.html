@@ -46,6 +46,9 @@
                             for="email_input">Email</label>
                     <input
                             id="email_input"
+                            hx-get="/contacts/0/email"
+                            hx-target="next .error"
+                            hx-trigger="change, keyup delay:200ms changed"
                             type="email"
                             class="form-control"
                             th:classappend="${#fields.hasErrors('contact.email') ? 'is-invalid' : ''}"
@@ -58,8 +61,12 @@
                          th:if="${#fields.hasErrors('contact.email')}"
                          th:errors="*{contact.email}">
                     </div>
+                    <!--Used when no errors are present during page reload, and the upper error element is therefore missing.
+                         d-block ensures that the invalid-feedback class remains visible even when no validation errors are present.-->
+                    <div class="error invalid-feedback "
+                         th:classappend="${#fields.hasErrors('contact.email') ? '' : 'd-block'}">
+                    </div>
                 </div>
-
                 <div class="form-group">
                     <label
                             id="phone_label"

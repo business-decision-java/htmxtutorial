@@ -6,6 +6,11 @@ import ch.obds.tutorial.contacts.web.form.ContactForm;
 import ch.obds.tutorial.contacts.web.form.EditContactForm;
 import ch.obds.tutorial.contacts.web.form.NewContactForm;
 import jakarta.validation.*;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -20,8 +25,6 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.util.Objects;
-import java.util.UUID;
 
 @Controller
 @RequestMapping({"/contacts"})
@@ -35,10 +38,19 @@ public class ContactsController {
     }
 
     @GetMapping("")
-    public ModelAndView contacts(@RequestParam(required = false) String query, ModelMap model) {
-        Iterable<Contact> contactsSet = Objects.nonNull(query) ? this.contactRepository.findByNameContainingIgnoreCase(query) : this.contactRepository.findAll();
+    public ModelAndView contacts(@RequestParam(defaultValue = "") String query,
+                                 @RequestParam(defaultValue = "0") Integer page,
+                                 @RequestParam(defaultValue = "10") Integer size,
+                                 @RequestParam(defaultValue = "email,asc") String[] sort,
+                                 ModelMap model) {
+        Sort sortOrder = getSort(sort);
+        Pageable pageRequest = PageRequest.of(page, size, sortOrder);
+        Page<Contact> contactsSet = StringUtils.isNoneEmpty(query) ? this.contactRepository.findByNameContainingIgnoreCase(query, pageRequest) : this.contactRepository.findAll(pageRequest);
         model.addAttribute("contacts", contactsSet);
         model.addAttribute("query", query);
+        model.addAttribute("page", page);
+        model.addAttribute("size", size);
+        model.addAttribute("sort", sort);
         return new ModelAndView("index", model);
     }
 
@@ -113,11 +125,11 @@ public class ContactsController {
         return "redirect:/contacts/%s".formatted(editContact.getId());
     }
 
-    @GetMapping({"/{id}/delete"})
-    public String handleDeleteContact(@PathVariable String id, ModelMap model, RedirectAttributes redirectAttributes) {
+    @DeleteMapping({"/{id}"})
+    public ModelAndView handleDelete(@PathVariable String id, ModelMap model, RedirectAttributes redirectAttributes) {
         this.contactRepository.deleteById(Long.parseLong(id));
         redirectAttributes.addFlashAttribute("message", "Contact deleted");
-        return "redirect:/contacts";
+        return new ModelAndView("redirect:/contacts", HttpStatus.SEE_OTHER);
     }
 
     @Constraint(validatedBy = UniqueEmailValidator.class)
@@ -158,5 +170,12 @@ public class ContactsController {
             }
             return valid;
         }
+    }
+
+    private Sort getSort(String[] sort) {
+        String sortField = sort[0];
+        String sortDirection = sort[1];
+        Sort.Direction direction = (sortDirection.equals("desc")) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        return Sort.by(new Sort.Order(direction, sortField));
     }
 }
