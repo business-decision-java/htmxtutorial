@@ -1,7 +1,5 @@
 package ch.obds.tutorial;
 
-import ch.obds.tutorial.contacts.repo.Contact;
-import ch.obds.tutorial.contacts.repo.ContactRepository;
 import ch.obds.tutorial.contacts.repo.DataFaker;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
@@ -18,6 +16,7 @@ public class Teil3ContactsApplication {
 
     @Autowired
     private DataFaker dataFaker;
+
 
     public static void main(String[] args) {
         SpringApplication.run(Teil3ContactsApplication.class, args);

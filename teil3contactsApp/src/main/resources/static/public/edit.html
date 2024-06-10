@@ -50,6 +50,9 @@
                             for="email_input">Email</label>
                     <input
                             id="email_input"
+                            th:hx-get="@{/contacts/{id}/email(id=${contact.id})}"
+                            hx-target="next .error"
+                            hx-trigger="change, keyup delay:200ms changed"
                             type="email"
                             class="form-control"
                             th:classappend="${#fields.hasErrors('contact.email') ? 'is-invalid' : ''}"
@@ -62,6 +65,12 @@
                             th:if="${#fields.hasErrors('contact.email')}"
                             th:errors="*{contact.email}">
                     </div>
+                    <!--Used when no errors are present during page reload, and the upper error element is therefore missing.
+                         d-block ensures that the invalid-feedback class remains visible even when no validation errors are present.-->
+                    <div class="error invalid-feedback "
+                         th:classappend="${#fields.hasErrors('contact.email') ? '' : 'd-block'}">
+                    </div>
+
                 </div>
 
                 <div class="form-group">
@@ -92,7 +101,15 @@
                     <a href="/contacts" class="btn btn-secondary">Back</a>
                     <div class="form-group d-flex">
                         <button type="submit" class="btn btn-primary">Save</button>
-                        <a th:href="@{/contacts/{id}/delete(id=*{contact.id})}" class="btn btn-danger">Delete</a>
+                        <button
+                                id="contact_delete_button"
+                                th:attr="hx-delete=@{/contacts/{id}(id=${contact.id})}"
+                                hx-target="body"
+                                hx-push-url="true"
+                                hx-confirm="Are you sure you want to delete this contact?"
+                                class="btn btn-danger">
+                            Delete
+                        </button>
                     </div>
                 </div>
             </fieldset>

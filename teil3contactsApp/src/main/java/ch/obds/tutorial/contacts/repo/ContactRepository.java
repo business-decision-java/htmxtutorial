@@ -1,15 +1,19 @@
 package ch.obds.tutorial.contacts.repo;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
-import java.util.UUID;
 
-public interface ContactRepository extends CrudRepository<Contact, Long> {
-
-    List<Contact> findByName(String name);
+public interface ContactRepository extends CrudRepository<Contact, Long>, PagingAndSortingRepository<Contact, Long> {
 
     List<Contact> findByNameContainingIgnoreCase(String name);
+
+    Page<Contact> findByNameContainingIgnoreCase(String name, Pageable pageable);
+
+    Page<Contact> findAll(Pageable pageable);
 
     boolean existsByEmail(String email);
 

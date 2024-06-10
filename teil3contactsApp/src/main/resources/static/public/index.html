@@ -2,7 +2,7 @@
 <html lang="en"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout.html}"
-      xmlns:xsi= "http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <title>Contacts</title>
@@ -26,8 +26,14 @@
                            class="form-control"
                            type="search"
                            name="query"
-                           th:value="${param.query}"/>
-                    <input type="submit" value="Search" class="btn btn-secondary"/>
+                           th:value="${param.query}"
+                           />
+                    <img id="spinner"
+                         class="htmx-indicator"
+                         src="/static/public/images/ball-triangle.svg"
+                         style="background-color: white;"
+                         alt="Searching..."/>
+                    <input type="submit" class="btn btn-primary" value="Search"/>
                 </form>
             </div>
             <form>
@@ -57,8 +63,27 @@
                                class="btn btn-primary btn-sm">Edit</a>
                         </td>
                     </tr>
+                    <tr>
+                        <td colspan="5" style="text-align: center">
+                            <button hx-target="closest tr"
+                                    hx-swap="outerHTML"
+                                    hx-select="tbody > tr"
+                                    th:hx-get="@{/contacts(page=${ page + 1 }, query=${query}, size=${size}, sort=${sort})}">
+                                Load More
+                            </button>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
+                <div>
+                <span style="float: right">
+
+                      <a th:if="${contacts.number &gt;= 1}" th:href="@{/contacts(page=${contacts.number - 1}, query=${query}, size=${size}, sort=${sort})}">Previous</a>
+
+                      <a  th:if="${contacts.numberOfElements  &gt;= size}"th:href="@{/contacts(page=${contacts.number + 1}, query=${query}, size=${size}, sort=${sort})}">Next</a>
+
+                </span>
+                </div>
             </form>
         </div>
     </div>
