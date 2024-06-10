@@ -42,6 +42,7 @@ public class ContactsController {
                                  @RequestParam(defaultValue = "0") Integer page,
                                  @RequestParam(defaultValue = "10") Integer size,
                                  @RequestParam(defaultValue = "email,asc") String[] sort,
+                                 @RequestHeader(value = "HX-Trigger", required = false) String hxTrigger,
                                  ModelMap model) {
         Sort sortOrder = getSort(sort);
         Pageable pageRequest = PageRequest.of(page, size, sortOrder);
@@ -51,6 +52,12 @@ public class ContactsController {
         model.addAttribute("page", page);
         model.addAttribute("size", size);
         model.addAttribute("sort", sort);
+
+        if ("search".equals(hxTrigger)) {
+            return new ModelAndView("fragments/rows :: contact_rows", model);
+        }
+
+
         return new ModelAndView("index", model);
     }
 

@@ -1,0 +1,26 @@
+<tr th:each="contact : ${contacts}" th:fragment="contact_rows">
+    <td th:text="${contact.name}"></td>
+    <td th:text="${contact.phone}"></td>
+    <td th:text="${contact.email}"></td>
+    <td>
+        <a th:href="@{/contacts/{id}(id=${contact.id})}" class="btn btn-secondary btn-sm">View</a>
+        <a th:href="@{/contacts/{id}/edit(id=${contact.id})}"
+           class="btn btn-primary btn-sm">Edit</a>
+    </td>
+</tr>
+
+<tr th:if="${contacts.number < 1}"/>
+<!-- add empty list if no entry present -->
+<tr>
+
+<tr th:if="${contacts.numberOfElements  &gt;= size}" th:fragment="contacts_more">
+    <td colspan="5" style="text-align: center">
+        <button hx-target="closest tr"
+                hx-swap="outerHTML"
+                hx-select="tbody > tr"
+                th:hx-get="@{/contacts(page=${ page + 1 }, query=${query}, size=${size}, sort=${sort})}">
+            Load More
+        </button>
+    </td>
+</tr>
+

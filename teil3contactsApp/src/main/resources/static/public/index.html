@@ -21,13 +21,19 @@
     <div class="container">
         <div d-flex justify-content-between align-items-center>
             <div class="d-flex" style="position: relative;">
+
+                <!-- search input -->
                 <form action="/contacts" method="get">
                     <input id="search"
                            class="form-control"
                            type="search"
                            name="query"
                            th:value="${param.query}"
-                           />
+                           hx-get="/contacts"
+                           hx-trigger="search, keyup delay:200ms changed"
+                           hx-target="tbody"
+                           hx-swap="innerHTML"/>
+
                     <img id="spinner"
                          class="htmx-indicator"
                          src="/static/public/images/ball-triangle.svg"
