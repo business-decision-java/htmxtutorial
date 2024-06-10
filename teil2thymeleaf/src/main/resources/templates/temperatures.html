@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+
+        <h1>Teil 2 - Thymeleaf pur</h1>
+
+        <p><a href="/">Home Teil 2</a></p>
+
+
+        <h2>Aufgabe 2: Eine Liste dynamischer Werte in HTML Template rendern</h2>
+        <div class="bg-warning">
+            Auf dieser Seite wollen wir in einer HTML-Tabelle eine Liste diverser Städte mit ihren aktuellen Temperaturen auflisten.
+            <ol>
+                <li>Schau Dir den halbfertigen Controller TemperaturesController an.</li>
+                <li>Füge in den Controller eine Operation ein, welche auf einen GET-Request dieses Template hier mit fertig ausgefüllter Tabelle rendert.</li>
+                <li>Die Hintergrundfarbe einer Tabellenzelle mit einer negativen Temperatur, soll nun hellrot hervorgehoben werden. Eine mit einem positiven Wert hellblau.</li>
+            </ol>
+        </div>
+
+
+        <h3>Temperaturen</h3>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Stadt</th>
+                    <th>Temperatur</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Musterzeile der Tabelle - so sollen die Einträge aussehen. -->
+                <tr>
+                    <td>Musterhausen</td>
+                    <td>23.5 Grad</td>
+                </tr>
+
+                <!--Lösung Variante 1: Ganzes Element doppelt führen und konditional nur eines rendern. Brachiale Variante die aber immer geht. -->
+                <tr th:each="cityTemperature: ${temperatures}">
+                    <td th:text="${cityTemperature.city}"></td>
+                    <td style="background-color: lightblue;" th:if="${cityTemperature.temperature} >= 0"><span  th:text="${cityTemperature.temperature}"></span> Grad</td>
+                    <td style="background-color: lightcoral;" th:if="${cityTemperature.temperature} < 0"><span  th:text="${cityTemperature.temperature}"></span> Grad</td>
+                </tr>
+
+                <!-- Lösung Variante 2: Nur eine konditionale CSS-Klasse zusätzlich hinzufügen. Elegante Variante. -->
+                <tr th:each="cityTemperature: ${temperatures}">
+                    <td th:text="${cityTemperature.city}"></td>
+                    <td th:styleappend="${cityTemperature.temperature>0 ? 'background-color: lightblue;' : 'background-color: lightcoral;'}"><span th:text="${cityTemperature.temperature}"></span> Grad</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</body>
+</html>

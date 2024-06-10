@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Teil 1: HTMX Basics</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+</head>
+<body>
+
+    <div class="container">
+
+        <h1>Teil 1: HTMX Basics</h1>
+        <a href="/">Home Teil 1</a>
+
+        <h2>Aufgabe 1: Erste htmx-Button-Experimente</h2>
+
+        <div class="bg-warning">
+            <p>Ausgangslage: Was passiert wenn Du den Button auf dieser Seite drückst?</p>
+            <ol>
+                <li>Binde nun die htmx-Library in die Seite ein, so dass wir dann den Button mit htmx Attributen dekorieren können.</li>
+                <li>Im GreetingController findest Du eine Ressource "/clicked". Füge dem Button nun ein möglichst einfaches **hx-get** (ohne weitere Attribute) auf diese Ressource hinzu. Was passiert mit dem Button beim Klicken?</li>
+                <li>Sorge nun dafür, dass das HTML-Element Button als ganzes ersetzt wird (und nicht nur der Text innerhalb des Buttons).</li>
+                <li>Nun soll das Resultat der Ressource nicht den Button ändern, sondern als Wert innerhalb des div mit der ID "resultat" angezeigt werden.</li>
+                <li>Aktuell gilt für den Button der Standard-Trigger "click" zum Auslösen, des hx-get. Stelle das so um, dass es zusätzlich auch bereits ausgelöst wird, sobald die Maus über den Button geschoben wird.</li>
+                <li>Per default wird der Trigger sofort ausgelöst. Füge eine Verzögerung hinzu, so dass 500ms nachdem die Maus über dem Button ist, das hx-get ausgelöst wird.</li>
+            </ol>
+        </div>
+
+        <button>
+            Click Me
+        </button>
+
+
+        <!-- Lösung erster Schritt: HTMX JS Library in den Header aufnehmen -->
+        <!-- script src="https://unpkg.com/htmx.org@1.9.12"></script-->
+
+
+        <!-- Lösung zweiter Schritt -->
+        <button hx-get="/clicked">
+            Click Me zweiter Schritt
+        </button>
+
+
+        <!-- Lösung dritter Schritt -->
+        <button hx-get="/clicked" hx-swap="outerHTML">
+            Click Me dritter Schritt
+        </button>
+
+
+        <!-- Lösung vierter Schritt -->
+        <button hx-get="/clicked" hx-swap="innerHTML" hx-target="#resultat">
+            Click Me vierter Schritt
+        </button>
+
+
+        <!-- Lösung fünfter Schritt -->
+        <button hx-get="/clicked" hx-swap="innerHTML" hx-target="#resultat" hx-trigger="mouseenter">
+            Click Me fünfter Schritt
+        </button>
+
+        <!-- Lösung sechster Schritt -->
+        <button hx-get="/clicked" hx-swap="innerHTML" hx-target="#resultat" hx-trigger="mouseenter delay:500ms" >
+            Click Me sechster Schritt
+        </button>
+
+        <div style="padding-top: 2rem;" id="resultat">Platzhalter für das Resultat.</div>
+
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+
+        <h1>Teil 2 - Thymeleaf pur</h1>
+
+        <p><a href="/">Home Teil 2</a></p>
+
+
+        <h2>Aufgabe 1: Dynamische Werte in HTML Template rendern</h2>
+        <div class="bg-warning">
+            <ol>
+                <li>View: Schau Dir mal das untenstehende Paragraph-Element an. Es rendert mit Thymeleaf das Attribut "name" aus dem Modell in die HTML Seite.</li>
+                <li>Controller: Schau Dir im Controller GreetingController die Operation greeting an und beantworte die folgenden Fragen dazu.</li>
+                <ol>
+                    <li>Welchen Wert wird per Default für das Modell-Attribut "name" gesetzt? Schau es Dir im Browser an.</li>
+                    <li>Wie kannst Du einen beliebigen Namen anzeigen lassen? Schau es Dir im Browser an.</li>
+                    <li>Was bedeutet der String "greeting" der als Resultat zurück gegeben wird?</li>
+                </ol>
+            </ol>
+        </div>
+
+        <p>Hallo <span th:text="${name}"/>!</p>
+
+        <!-- Antwort Frage 1: Default Wert ist "Welt" -->
+
+        <!-- Antwort Frage 2: URL Parameter ?name=Maria setzen -->
+
+        <!-- Antwort Frage 3: "greeting" ist der Name der View, welche als Antwort gerendert wird. Hier ist dies das Thymeleaf HTML-Template greeting.html -->
+
+    </div>
+</body>
+</html>

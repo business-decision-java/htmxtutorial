@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Contacts</title>
+    <!--/* Used only for editing in Pinegrow. Remove comment to display -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css">
+    <!--*/-->
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="container">
+        <br/>
+        <div class="alert alert-success">
+            <strong>Edit Contact</strong>
+        </div>
+    </div>
+    <div class="container">
+        <form action="#" th:action="@{/contacts/{id}/edit(id=${contact.id})}" method="post" class="needs-validation"
+              novalidate>
+            <fieldset>
+                <legend>Contact Values</legend>
+
+                <div class="form-group">
+                    <label
+                            id="name_label"
+                            for="name_input">Name</label>
+                    <input
+                            id="name_input"
+                            type="text"
+                            class="form-control"
+                            th:classappend="${#fields.hasErrors('contact.name') ? 'is-invalid' : ''}"
+                            placeholder="Name"
+                            required
+                            th:field="*{contact.name}">
+                    <div
+                            th:if="${#fields.hasErrors('contact.name')}"
+                            th:errors="*{contact.name}"
+                            class="invalid-feedback">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label
+                            id="email_label"
+                            for="email_input">Email</label>
+                    <input
+                            id="email_input"
+                            type="email"
+                            class="form-control"
+                            th:classappend="${#fields.hasErrors('contact.email') ? 'is-invalid' : ''}"
+                            placeholder="Email"
+                            required
+                            th:field="*{contact.email}"
+                    >
+                    <div class="error invalid-feedback"
+                            id="error"
+                            th:if="${#fields.hasErrors('contact.email')}"
+                            th:errors="*{contact.email}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label
+                            id="phone_label"
+                            for="phone_input">Phone</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroupPrepend3">@</span>
+                        </div>
+                        <input
+                                id="phone_input"
+                                type="tel"
+                                class="form-control"
+                                th:classappend="${#fields.hasErrors('contact.phone') ? 'is-invalid' : ''}"
+                                placeholder="+41 79 555 55 55"
+                                required
+                                th:field="*{contact.phone}"
+                        >
+                        <div
+                                th:if="${#fields.hasErrors('contact.phone')}"
+                                th:errors="*{contact.phone}"
+                                class="invalid-feedback">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group d-flex justify-content-between">
+                    <a href="/contacts" class="btn btn-secondary">Back</a>
+                    <div class="form-group d-flex">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <a th:href="@{/contacts/{id}/delete(id=*{contact.id})}" class="btn btn-danger">Delete</a>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</section>
+<!--/* Used only for editing in Pinegrow. Remove comment to display -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"></script>
+<!--*/-->
+</body>
+</html>
